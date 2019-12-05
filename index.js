@@ -1,20 +1,25 @@
+//Declaracion de dependencias:
 var express=require('express');
 var bodyParser=require('body-parser');
-var DataStore=require('nedb');
+var Datastore=require('nedb');
 var port= 3000;
 var BASE_API_PATH="/api/v1";
-
 var DB_FILE_NAME=__dirname+"/contacts.json";
 
+
 console.log("Starting API Server...");
+
+
 
 var app= express();
 app.use(bodyParser.json());
 
-var db= new DataStore({
-    filename:DB_FILE_NAME,
-    autoload: true
-})
+//Inicializamos la base de datos:
+db = new Datastore({
+    filename: DB_FILE_NAME, //nombre del fichero que hemos definido anteriormente
+    autoload: true 
+   });
+
 
 app.get("/", (req,res)=>{
 
@@ -26,12 +31,18 @@ app.get("/", (req,res)=>{
 app.get(BASE_API_PATH+"/contacts", (req,res)=>{
 
     console.log(Date()+"- GET/contacts");
-    db.find({}, (err,contacts)=>{
+    
+        db.find({}, (err,contacts)=>{//hace una consulta de cualquier elemento gracias a {}
         if(err){
             console.log(Date()+"-"+err)
             res.sendStatus(500)
         }else{
-            res.send(contacts);
+            res.send(contacts.map((contact)=>{
+
+                delete contact._id;
+                return contact;
+            })
+          );
         }
 
     });
@@ -42,7 +53,7 @@ app.post(BASE_API_PATH+"/contacts", (req,res)=>{
     console.log(Date()+"- POST/contacts");
     var contact=req.body;
     
-    db.insert(contact,(err)=>{
+    db.insert(contact,(err)=>{ //insertamos un nuevo elemento en la base
         if(err){
             console.log(Date()+"-"+ err);
             res.sendStatus(500);
