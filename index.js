@@ -32,7 +32,7 @@ app.get(BASE_API_PATH+"/contacts", (req,res)=>{
 
     console.log(Date()+"- GET/contacts");
     
-        db.find({}, (err,contacts)=>{
+        db.find({}, (err,contacts)=>{//hace una consulta de cualquier elemento gracias a {}
         if(err){
             console.log(Date()+"-"+err)
             res.sendStatus(500)
