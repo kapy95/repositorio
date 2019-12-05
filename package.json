@@ -5,9 +5,9 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url":"https://github.com/kapy95/repositorio.git"
+    "url": "https://github.com/kapy95/repositorio.git"
   },
-  "homepage":"https://github.com/kapy95/repositorio",
+  "homepage": "https://github.com/kapy95/repositorio",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,7 @@
   "author": "Carlos",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nedb": "^1.8.0"
   }
 }
