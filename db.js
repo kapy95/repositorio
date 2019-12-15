@@ -1,14 +1,15 @@
 //base de datos:
-var Datastore=require('nedb');
+const mongoose = require('mongoose');
+const DB_URL = (process.env.MONGO_URL || 'mongodb://localhost:3000/test');
 
-var DB_FILE_NAME=__dirname+"/contacts.json";
+const dbConnect= function(){
+    const db=mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error: '));
+    return mongoose.connect(DB_URL, {useNewUrlParser: true});
+}
 
-//Inicializamos la base de datos:
-var db = new Datastore({
-    filename: DB_FILE_NAME, //nombre del fichero que hemos definido anteriormente
-    autoload: true 
-   });
 
-   module.exports = db;
+
+module.exports = dbConnect; //promesa de la conexion que gestionamos en index.js
 
    
