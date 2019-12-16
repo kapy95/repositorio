@@ -1,6 +1,6 @@
 const app=require('../server.js');
 const request = require('supertest');
-const db=require('../db.js');
+const Contact=require('../contacts.js');
 
 
 //con describe agrupamos los casos de prueba
@@ -38,13 +38,14 @@ describe("Contacts Api", () =>{
      describe("GET /contacts",() =>{
 
         beforeAll(() => {
+
             const contacts=[
-                {"name":"juan", "phone":"5555"},
-                {"name":"pepe", "phone":"6666"}
+               new Contact({"name":"juan", "phone":"5555"}),
+               new Contact({"name":"pepe", "phone":"6666"})
             ];
             //expiamos el metodo find de la variable 
             //db que representa nuestra base de datos:
-            dbFind = jest.spyOn(db,"find");
+            dbFind = jest.spyOn(Contact,"find");//expiamos contact ahora
             dbFind.mockImplementation((query, callback) =>{
                 callback(null,contacts);
 
@@ -79,7 +80,7 @@ describe("Contacts Api", () =>{
         beforeEach(() =>{
 
             //definimos el espionaje sobre db insert
-            dbInsert=jest.spyOn(db,"insert");
+            dbInsert=jest.spyOn(Contact,"create");
 
         });
 
@@ -104,7 +105,7 @@ describe("Contacts Api", () =>{
 
         it("Should return 500 code if there is any problem with the DB",() =>{
 
-            dbInsert = jest.spyOn(db, "insert");
+            dbInsert = jest.spyOn(Contact, "create");
                 dbInsert.mockImplementation((c,callback)=>{
                     callback(true); //debe ser true pq hay error
                 });
